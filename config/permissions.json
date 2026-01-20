@@ -1,0 +1,7 @@
+{
+  "file_read": "REQUIRE_CONFIRMATION",
+  "file_write": "REQUIRE_CONFIRMATION",
+  "file_delete": "DENY",
+  "app_launch": "REQUIRE_CONFIRMATION",
+  "system_command": "DENY"
+}

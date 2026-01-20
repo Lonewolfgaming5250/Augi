@@ -1,0 +1,15 @@
+{
+  "timestamp": "2026-01-20T10:53:51.827169",
+  "session_id": "20260120_105351",
+  "messages": [
+    {
+      "role": "user",
+      "content": "Hello, what's your name?"
+    },
+    {
+      "role": "assistant",
+      "content": "I'm Augi, your personal AI assistant"
+    }
+  ],
+  "message_count": 2
+}

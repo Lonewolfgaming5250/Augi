@@ -1,0 +1,23 @@
+{
+  "timestamp": "2026-01-20T10:58:07.388986",
+  "session_id": "20260120_105807",
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm interested in Python programming and AI development"
+    },
+    {
+      "role": "assistant",
+      "content": "That's great! Python is excellent for AI development."
+    },
+    {
+      "role": "user",
+      "content": "I also enjoy web development with JavaScript"
+    },
+    {
+      "role": "assistant",
+      "content": "Web dev is a valuable skill to have alongside AI."
+    }
+  ],
+  "message_count": 4
+}

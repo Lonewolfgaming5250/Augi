@@ -1,0 +1,15 @@
+{
+  "timestamp": "2026-01-20T10:56:07.806879",
+  "session_id": "20260120_105607",
+  "messages": [
+    {
+      "role": "user",
+      "content": "Test message"
+    },
+    {
+      "role": "assistant",
+      "content": "Test response"
+    }
+  ],
+  "message_count": 2
+}

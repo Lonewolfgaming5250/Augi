@@ -1,0 +1,370 @@
+{
+  "conversations": {
+    "20260120_105351": {
+      "timestamp": "2026-01-20T10:53:51.827169",
+      "message_count": 2,
+      "keywords": [
+        "what's your",
+        "personal ai",
+        "augi, your",
+        "i'm augi,",
+        "hello, what's",
+        "your personal",
+        "your name?",
+        "ai assistant",
+        "what"
+      ]
+    },
+    "20260120_105442": {
+      "timestamp": "2026-01-20T10:54:42.849288",
+      "message_count": 4,
+      "keywords": [
+        "dev is",
+        "and ai",
+        "python",
+        "have alongside",
+        "development with",
+        "programming and",
+        "a valuable",
+        "web dev",
+        "ai development.",
+        "enjoy web",
+        "skill to",
+        "valuable skill",
+        "is excellent",
+        "alongside ai.",
+        "python is",
+        "in python",
+        "that's great!",
+        "with javascript",
+        "i also",
+        "to have"
+      ]
+    },
+    "20260120_105547": {
+      "timestamp": "2026-01-20T10:55:47.256822",
+      "message_count": 2,
+      "keywords": [
+        "test response",
+        "test message"
+      ]
+    },
+    "20260120_105607": {
+      "timestamp": "2026-01-20T10:56:07.806879",
+      "message_count": 2,
+      "keywords": [
+        "test response",
+        "test message"
+      ]
+    },
+    "20260120_105627": {
+      "timestamp": "2026-01-20T10:56:27.858110",
+      "message_count": 2,
+      "keywords": [
+        "test message",
+        "test response"
+      ]
+    },
+    "20260120_105756": {
+      "timestamp": "2026-01-20T10:57:56.833099",
+      "message_count": 2,
+      "keywords": [
+        "test message",
+        "test response"
+      ]
+    },
+    "20260120_105807": {
+      "timestamp": "2026-01-20T10:58:07.388986",
+      "message_count": 4,
+      "keywords": [
+        "in python",
+        "is excellent",
+        "that's great!",
+        "excellent for",
+        "i'm interested",
+        "with javascript",
+        "python programming",
+        "for ai",
+        "web development",
+        "python",
+        "i also",
+        "programming and",
+        "interested in",
+        "web dev",
+        "python is",
+        "valuable skill",
+        "great! python",
+        "enjoy web",
+        "also enjoy",
+        "have alongside"
+      ]
+    },
+    "test_session_1": {
+      "timestamp": "2026-01-20T10:58:27.535982",
+      "message_count": 4,
+      "keywords": [
+        "with games.",
+        "i love",
+        "and game",
+        "working with",
+        "interested in",
+        "have a",
+        "javascript. i",
+        "set for",
+        "great! python",
+        "dev and",
+        "i'm interested",
+        "is perfect",
+        "work",
+        "strong skill",
+        "for game",
+        "perfect for",
+        "python is",
+        "both game",
+        "code in",
+        "code"
+      ]
+    },
+    "test_session_2": {
+      "timestamp": "2026-01-20T10:58:27.557118",
+      "message_count": 2,
+      "keywords": [
+        "for development",
+        "vs code",
+        "code for",
+        "like",
+        "i like",
+        "excellent editor!",
+        "using vs",
+        "code is",
+        "like using",
+        "an excellent",
+        "code",
+        "develop"
+      ]
+    }
+  },
+  "keywords": {
+    "what's your": [
+      "20260120_105351"
+    ],
+    "personal ai": [
+      "20260120_105351"
+    ],
+    "augi, your": [
+      "20260120_105351"
+    ],
+    "i'm augi,": [
+      "20260120_105351"
+    ],
+    "hello, what's": [
+      "20260120_105351"
+    ],
+    "your personal": [
+      "20260120_105351"
+    ],
+    "your name?": [
+      "20260120_105351"
+    ],
+    "ai assistant": [
+      "20260120_105351"
+    ],
+    "what": [
+      "20260120_105351"
+    ],
+    "dev is": [
+      "20260120_105442"
+    ],
+    "and ai": [
+      "20260120_105442"
+    ],
+    "python": [
+      "20260120_105442",
+      "20260120_105807"
+    ],
+    "have alongside": [
+      "20260120_105442",
+      "20260120_105807"
+    ],
+    "development with": [
+      "20260120_105442"
+    ],
+    "programming and": [
+      "20260120_105442",
+      "20260120_105807"
+    ],
+    "a valuable": [
+      "20260120_105442"
+    ],
+    "web dev": [
+      "20260120_105442",
+      "20260120_105807"
+    ],
+    "ai development.": [
+      "20260120_105442"
+    ],
+    "enjoy web": [
+      "20260120_105442",
+      "20260120_105807"
+    ],
+    "skill to": [
+      "20260120_105442"
+    ],
+    "valuable skill": [
+      "20260120_105442",
+      "20260120_105807"
+    ],
+    "is excellent": [
+      "20260120_105442",
+      "20260120_105807"
+    ],
+    "alongside ai.": [
+      "20260120_105442"
+    ],
+    "python is": [
+      "20260120_105442",
+      "20260120_105807",
+      "test_session_1"
+    ],
+    "in python": [
+      "20260120_105442",
+      "20260120_105807"
+    ],
+    "that's great!": [
+      "20260120_105442",
+      "20260120_105807"
+    ],
+    "with javascript": [
+      "20260120_105442",
+      "20260120_105807"
+    ],
+    "i also": [
+      "20260120_105442",
+      "20260120_105807"
+    ],
+    "to have": [
+      "20260120_105442"
+    ],
+    "test response": [
+      "20260120_105547",
+      "20260120_105607",
+      "20260120_105627",
+      "20260120_105756"
+    ],
+    "test message": [
+      "20260120_105547",
+      "20260120_105607",
+      "20260120_105627",
+      "20260120_105756"
+    ],
+    "excellent for": [
+      "20260120_105807"
+    ],
+    "i'm interested": [
+      "20260120_105807",
+      "test_session_1"
+    ],
+    "python programming": [
+      "20260120_105807"
+    ],
+    "for ai": [
+      "20260120_105807"
+    ],
+    "web development": [
+      "20260120_105807"
+    ],
+    "interested in": [
+      "20260120_105807",
+      "test_session_1"
+    ],
+    "great! python": [
+      "20260120_105807",
+      "test_session_1"
+    ],
+    "also enjoy": [
+      "20260120_105807"
+    ],
+    "with games.": [
+      "test_session_1"
+    ],
+    "i love": [
+      "test_session_1"
+    ],
+    "and game": [
+      "test_session_1"
+    ],
+    "working with": [
+      "test_session_1"
+    ],
+    "have a": [
+      "test_session_1"
+    ],
+    "javascript. i": [
+      "test_session_1"
+    ],
+    "set for": [
+      "test_session_1"
+    ],
+    "dev and": [
+      "test_session_1"
+    ],
+    "is perfect": [
+      "test_session_1"
+    ],
+    "work": [
+      "test_session_1"
+    ],
+    "strong skill": [
+      "test_session_1"
+    ],
+    "for game": [
+      "test_session_1"
+    ],
+    "perfect for": [
+      "test_session_1"
+    ],
+    "both game": [
+      "test_session_1"
+    ],
+    "code in": [
+      "test_session_1"
+    ],
+    "code": [
+      "test_session_1",
+      "test_session_2"
+    ],
+    "for development": [
+      "test_session_2"
+    ],
+    "vs code": [
+      "test_session_2"
+    ],
+    "code for": [
+      "test_session_2"
+    ],
+    "like": [
+      "test_session_2"
+    ],
+    "i like": [
+      "test_session_2"
+    ],
+    "excellent editor!": [
+      "test_session_2"
+    ],
+    "using vs": [
+      "test_session_2"
+    ],
+    "code is": [
+      "test_session_2"
+    ],
+    "like using": [
+      "test_session_2"
+    ],
+    "an excellent": [
+      "test_session_2"
+    ],
+    "develop": [
+      "test_session_2"
+    ]
+  }
+}
