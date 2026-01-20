@@ -252,13 +252,15 @@ class MemoryManager:
                 with open(file_path, 'r') as f:
                     data = json.load(f)
                     if not isinstance(data, dict):
+                        print(f"Warning: Conversation file {file_path} does not contain a dict. Skipping.")
                         continue
                     conversations.append({
                         "session_id": data.get("session_id", file_path.stem),
                         "timestamp": data.get("timestamp"),
                         "message_count": data.get("message_count", 0)
                     })
-            except (json.JSONDecodeError, IOError, AttributeError):
+            except (json.JSONDecodeError, IOError, AttributeError) as e:
+                print(f"Error reading conversation file {file_path}: {e}")
                 continue
         
         return conversations
