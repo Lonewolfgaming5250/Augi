@@ -41,7 +41,7 @@ from src.user_profile import UserProfileManager
 from src.permission_manager import PermissionManager, OperationType
 from src.web_searcher import WebSearcher
 import collections.abc
-import streamlit_authenticator as stauth
+from streamlit_oauth import OAuth2Component
 
 def convert_sets(obj):
     if isinstance(obj, set):
@@ -56,6 +56,8 @@ def convert_sets(obj):
     # Google login user name
     if "user_name" not in st.session_state:
         st.session_state.user_name = None
+    if "user_email" not in st.session_state:
+        st.session_state.user_email = None
     if "use_custom_name" not in st.session_state:
         st.session_state.use_custom_name = False
     if "custom_name" not in st.session_state:
@@ -68,44 +70,31 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# --- Google Login Setup ---
-import yaml
-from yaml import SafeLoader
+# --- Google OAuth2 Login Setup ---
+GOOGLE_CLIENT_ID = "YOUR_GOOGLE_CLIENT_ID"
+GOOGLE_CLIENT_SECRET = "YOUR_GOOGLE_CLIENT_SECRET"
+GOOGLE_AUTHORIZATION_URL = "https://accounts.google.com/o/oauth2/v2/auth"
+GOOGLE_TOKEN_URL = "https://oauth2.googleapis.com/token"
+GOOGLE_USERINFO_URL = "https://www.googleapis.com/oauth2/v3/userinfo"
+GOOGLE_SCOPE = "openid email profile"
 
-# Example config for Google login (replace with your client_id, etc.)
-config = yaml.safe_load('''
-credentials:
-  usernames:
-    user1:
-      email: user1@gmail.com
-      name: User One
-cookie:
-  expiry_days: 30
-  key: some_signature_key
-  name: augi_login_cookie
-preauthorized:
-  emails:
-    - user1@gmail.com
-''')
-
-authenticator = stauth.Authenticate(
-    config['credentials'],
-    config['cookie']['name'],
-    config['cookie']['key'],
-    config['cookie']['expiry_days'],
-    config['preauthorized']
+oauth2 = OAuth2Component(
+        GOOGLE_CLIENT_ID,
+        GOOGLE_CLIENT_SECRET,
+        GOOGLE_AUTHORIZATION_URL,
+        GOOGLE_TOKEN_URL,
+        GOOGLE_USERINFO_URL,
+        GOOGLE_SCOPE
 )
 
-name, authentication_status, username = authenticator.login('Login', 'main')
-
-if authentication_status is False:
-    st.error('Login failed. Please check your credentials.')
-    st.stop()
-elif authentication_status is None:
-    st.warning('Please log in to use Augi.')
-    st.stop()
+result = oauth2.authorize_button("Login with Google", "google-login")
+if result and "token" in result:
+        userinfo = result["user_info"]
+        st.session_state.user_name = userinfo.get("name", "Google User")
+        st.session_state.user_email = userinfo.get("email", "")
 else:
-    st.session_state.user_name = name
+        st.warning("Please log in with your Google account to use Augi.")
+        st.stop()
 
 # Custom CSS
 st.markdown("""
