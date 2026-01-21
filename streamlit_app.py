@@ -1,3 +1,19 @@
+def detect_personality_from_message(message: str):
+    """Detect mood/tone and map to PersonalityType."""
+    msg = message.lower()
+    if any(word in msg for word in ["help", "stuck", "confused", "frustrated", "issue", "problem"]):
+        return PersonalityType.HELPFUL
+    if any(word in msg for word in ["lol", "funny", "joke", "haha", "pun", "witty"]):
+        return PersonalityType.WITTY
+    if any(word in msg for word in ["tech", "code", "program", "python", "ai", "machine learning"]):
+        return PersonalityType.TECH_SAVVY
+    if any(word in msg for word in ["hi", "hello", "hey", "what's up", "how are you", "buddy"]):
+        return PersonalityType.FRIENDLY
+    if any(word in msg for word in ["please", "thank you", "regards", "sincerely", "formal", "business"]):
+        return PersonalityType.PROFESSIONAL
+    if any(word in msg for word in ["chill", "relax", "casual", "easygoing", "no worries"]):
+        return PersonalityType.CASUAL
+    return None
 """
 Augi - Personal AI Assistant Web App
 Built with Streamlit for cross-platform access (Web, Android, iPhone, Desktop)
@@ -214,24 +230,31 @@ with chat_container:
 # Chat input
 user_input = st.chat_input("Type your message here...", key="user_input")
 
+
 if user_input:
+    # Detect and adapt personality based on user message
+    detected_personality = detect_personality_from_message(user_input)
+    if detected_personality and detected_personality != st.session_state.personality:
+        st.session_state.personality = detected_personality
+        st.toast(f"Personality adapted to: {detected_personality.name.title()}")
+
     # Add user message to history
     st.session_state.conversation_history.append({
         "role": "user",
         "content": user_input
     })
-    
+
     # Display user message
     with st.chat_message("user"):
         st.write(user_input)
-    
+
     # Get AI response
     with st.spinner("Augi is thinking..."):
         try:
             # Check if internet search is needed
             search_keywords = ["search", "find", "look up", "weather", "news", "what's"]
             should_search = any(keyword in user_input.lower() for keyword in search_keywords)
-            
+
             search_results = None
             if should_search:
                 # Ask for permission
