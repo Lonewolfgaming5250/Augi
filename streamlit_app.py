@@ -71,23 +71,21 @@ st.set_page_config(
 )
 
 # --- Google OAuth2 Login Setup ---
-GOOGLE_CLIENT_ID = "YOUR_GOOGLE_CLIENT_ID"
-GOOGLE_CLIENT_SECRET = "YOUR_GOOGLE_CLIENT_SECRET"
+GOOGLE_CLIENT_ID = "WIndows Browser"
+GOOGLE_CLIENT_SECRET = "957377414165-2avv027864fr311cgogii100tb1uotcc.apps.googleusercontent.com"
 GOOGLE_AUTHORIZATION_URL = "https://accounts.google.com/o/oauth2/v2/auth"
 GOOGLE_TOKEN_URL = "https://oauth2.googleapis.com/token"
 GOOGLE_USERINFO_URL = "https://www.googleapis.com/oauth2/v3/userinfo"
 GOOGLE_SCOPE = "openid email profile"
-
 oauth2 = OAuth2Component(
-        GOOGLE_CLIENT_ID,
-        GOOGLE_CLIENT_SECRET,
-        GOOGLE_AUTHORIZATION_URL,
-        GOOGLE_TOKEN_URL,
-        GOOGLE_USERINFO_URL,
-        GOOGLE_SCOPE
+    GOOGLE_CLIENT_ID,
+    GOOGLE_CLIENT_SECRET,
+    GOOGLE_AUTHORIZATION_URL,
+    GOOGLE_TOKEN_URL,
+    GOOGLE_USERINFO_URL
 )
 
-result = oauth2.authorize_button("Login with Google", "google-login")
+result = oauth2.authorize_button("Login with Google", "google-login", GOOGLE_SCOPE)
 if result and "token" in result:
         userinfo = result["user_info"]
         st.session_state.user_name = userinfo.get("name", "Google User")
