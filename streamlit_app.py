@@ -1,19 +1,27 @@
 def detect_personality_from_message(message: str):
-    """Detect mood/tone and map to PersonalityType."""
+    """Smarter mood/tone detection: score personalities by keyword matches."""
     msg = message.lower()
-    if any(word in msg for word in ["help", "stuck", "confused", "frustrated", "issue", "problem"]):
-        return PersonalityType.HELPFUL
-    if any(word in msg for word in ["lol", "funny", "joke", "haha", "pun", "witty"]):
-        return PersonalityType.WITTY
-    if any(word in msg for word in ["tech", "code", "program", "python", "ai", "machine learning"]):
-        return PersonalityType.TECH_SAVVY
-    if any(word in msg for word in ["hi", "hello", "hey", "what's up", "how are you", "buddy"]):
-        return PersonalityType.FRIENDLY
-    if any(word in msg for word in ["please", "thank you", "regards", "sincerely", "formal", "business"]):
-        return PersonalityType.PROFESSIONAL
-    if any(word in msg for word in ["chill", "relax", "casual", "easygoing", "no worries"]):
-        return PersonalityType.CASUAL
-    return None
+    personality_keywords = {
+        PersonalityType.HELPFUL: ["help", "stuck", "confused", "frustrated", "issue", "problem", "assist", "support"],
+        PersonalityType.WITTY: ["lol", "funny", "joke", "haha", "pun", "witty", "entertain", "laugh", "humor"],
+        PersonalityType.TECH_SAVVY: ["tech", "code", "program", "python", "ai", "machine learning", "computer", "software", "hardware"],
+        PersonalityType.FRIENDLY: ["hi", "hello", "hey", "what's up", "how are you", "buddy", "friend", "greetings", "nice to meet"],
+        PersonalityType.PROFESSIONAL: ["please", "thank you", "regards", "sincerely", "formal", "business", "report", "efficient", "professional"],
+        PersonalityType.CASUAL: ["chill", "relax", "casual", "easygoing", "no worries", "laid back", "hang out", "just talking"],
+    }
+    scores = {ptype: 0 for ptype in personality_keywords}
+    for ptype, keywords in personality_keywords.items():
+        for word in keywords:
+            if word in msg:
+                scores[ptype] += 1
+    # Pick the highest scoring personality, break ties by priority order
+    best_personality = None
+    best_score = 0
+    for ptype in [PersonalityType.WITTY, PersonalityType.HELPFUL, PersonalityType.TECH_SAVVY, PersonalityType.FRIENDLY, PersonalityType.PROFESSIONAL, PersonalityType.CASUAL]:
+        if scores[ptype] > best_score:
+            best_score = scores[ptype]
+            best_personality = ptype
+    return best_personality
 """
 Augi - Personal AI Assistant Web App
 Built with Streamlit for cross-platform access (Web, Android, iPhone, Desktop)
