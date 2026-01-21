@@ -3,6 +3,7 @@ Augi - Personal AI Assistant Web App
 Built with Streamlit for cross-platform access (Web, Android, iPhone, Desktop)
 """
 
+
 import streamlit as st
 import json
 import os
@@ -14,6 +15,17 @@ from src.memory_manager import MemoryManager
 from src.user_profile import UserProfileManager
 from src.permission_manager import PermissionManager, OperationType
 from src.web_searcher import WebSearcher
+import collections.abc
+
+def convert_sets(obj):
+    if isinstance(obj, set):
+        return list(obj)
+    elif isinstance(obj, collections.abc.Mapping):
+        return {k: convert_sets(v) for k, v in obj.items()}
+    elif isinstance(obj, list):
+        return [convert_sets(i) for i in obj]
+    else:
+        return obj
 
 # Page configuration
 st.set_page_config(
@@ -241,8 +253,9 @@ if user_input:
 
 Current date and time: {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
 
+
 You have access to the user's profile information:
-{json.dumps(st.session_state.user_profile_manager.get_profile(), indent=2) if st.session_state.enable_learning else "No profile information available yet."}
+{json.dumps(convert_sets(st.session_state.user_profile_manager.get_profile()), indent=2) if st.session_state.enable_learning else "No profile information available yet."}
 
 IMPORTANT: You have complete memory of all past conversations with this user. Use this information to:
 - Provide continuity and context
@@ -256,7 +269,7 @@ When the user asks questions, be conversational and helpful. Reference past conv
             
             # Add search context if available
             if search_results:
-                system_prompt += f"\n\nInternet Search Results:\n{json.dumps(search_results, indent=2)}"
+                system_prompt += f"\n\nInternet Search Results:\n{json.dumps(convert_sets(search_results), indent=2)}"
             
             # Call Claude API
             response = st.session_state.client.messages.create(
