@@ -8,6 +8,7 @@ def detect_personality_from_message(message: str):
         PersonalityType.FRIENDLY: ["hi", "hello", "hey", "what's up", "how are you", "buddy", "friend", "greetings", "nice to meet"],
         PersonalityType.PROFESSIONAL: ["please", "thank you", "regards", "sincerely", "formal", "business", "report", "efficient", "professional"],
         PersonalityType.CASUAL: ["chill", "relax", "casual", "easygoing", "no worries", "laid back", "hang out", "just talking"],
+        PersonalityType.SASSY: ["sassy", "attitude", "sardonic", "sneer", "smirk", "sarcastic", "mock", "tease"],
     }
     scores = {ptype: 0 for ptype in personality_keywords}
     for ptype, keywords in personality_keywords.items():
@@ -17,7 +18,7 @@ def detect_personality_from_message(message: str):
     # Pick the highest scoring personality, break ties by priority order
     best_personality = None
     best_score = 0
-    for ptype in [PersonalityType.WITTY, PersonalityType.HELPFUL, PersonalityType.TECH_SAVVY, PersonalityType.FRIENDLY, PersonalityType.PROFESSIONAL, PersonalityType.CASUAL]:
+    for ptype in [PersonalityType.WITTY, PersonalityType.HELPFUL, PersonalityType.TECH_SAVVY, PersonalityType.FRIENDLY, PersonalityType.PROFESSIONAL, PersonalityType.CASUAL, PersonalityType.SASSY]:
         if scores[ptype] > best_score:
             best_score = scores[ptype]
             best_personality = ptype
@@ -40,6 +41,7 @@ from src.user_profile import UserProfileManager
 from src.permission_manager import PermissionManager, OperationType
 from src.web_searcher import WebSearcher
 import collections.abc
+import streamlit_authenticator as stauth
 
 def convert_sets(obj):
     if isinstance(obj, set):
@@ -51,6 +53,13 @@ def convert_sets(obj):
     else:
         return obj
 
+    # Google login user name
+    if "user_name" not in st.session_state:
+        st.session_state.user_name = None
+    if "use_custom_name" not in st.session_state:
+        st.session_state.use_custom_name = False
+    if "custom_name" not in st.session_state:
+        st.session_state.custom_name = ""
 # Page configuration
 st.set_page_config(
     page_title="Augi - AI Assistant",
@@ -58,6 +67,45 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded"
 )
+
+# --- Google Login Setup ---
+import yaml
+from yaml import SafeLoader
+
+# Example config for Google login (replace with your client_id, etc.)
+config = yaml.safe_load('''
+credentials:
+  usernames:
+    user1:
+      email: user1@gmail.com
+      name: User One
+cookie:
+  expiry_days: 30
+  key: some_signature_key
+  name: augi_login_cookie
+preauthorized:
+  emails:
+    - user1@gmail.com
+''')
+
+authenticator = stauth.Authenticate(
+    config['credentials'],
+    config['cookie']['name'],
+    config['cookie']['key'],
+    config['cookie']['expiry_days'],
+    config['preauthorized']
+)
+
+name, authentication_status, username = authenticator.login('Login', 'main')
+
+if authentication_status is False:
+    st.error('Login failed. Please check your credentials.')
+    st.stop()
+elif authentication_status is None:
+    st.warning('Please log in to use Augi.')
+    st.stop()
+else:
+    st.session_state.user_name = name
 
 # Custom CSS
 st.markdown("""
@@ -73,6 +121,9 @@ def init_session_state():
     """Initialize all session state variables"""
     if "client" not in st.session_state:
         api_key = os.getenv("ANTHROPIC_API_KEY")
+        if not api_key:
+            st.error("Anthropic API key not found. Please set ANTHROPIC_API_KEY in your environment.")
+            st.stop()
         st.session_state.client = Anthropic(api_key=api_key)
     
     if "conversation_history" not in st.session_state:
@@ -106,7 +157,16 @@ init_session_state()
 
 # Sidebar configuration
 with st.sidebar:
-    st.title("[SETTINGS] Settings")
+    st.title(f"[SETTINGS] Settings - Logged in as: {st.session_state.user_name}")
+
+    st.subheader("User Name")
+    st.session_state.use_custom_name = st.checkbox("Use a different name", value=st.session_state.use_custom_name)
+    if st.session_state.use_custom_name:
+        st.session_state.custom_name = st.text_input("Enter your preferred name:", value=st.session_state.custom_name)
+        display_name = st.session_state.custom_name if st.session_state.custom_name else st.session_state.user_name
+    else:
+        display_name = st.session_state.user_name
+    st.info(f"Current name: {display_name}")
     
     # Personality selection
     st.subheader("Personality")
@@ -117,6 +177,7 @@ with st.sidebar:
         "Helpful": PersonalityType.HELPFUL,
         "Tech Savvy": PersonalityType.TECH_SAVVY,
         "Casual": PersonalityType.CASUAL,
+        "Sassy": PersonalityType.SASSY,
     }
     
     selected_personality = st.selectbox(
@@ -225,7 +286,7 @@ with st.sidebar:
     
 
 # Main chat interface
-st.title("[AI] Augi - Your Personal AI Assistant")
+st.title(f"[AI] Augi - Your Personal AI Assistant ({display_name})")
 st.markdown("*Cross-platform AI companion built with Streamlit*")
 
 # Display conversation history
@@ -310,24 +371,23 @@ When the user asks questions, be conversational and helpful. Reference past conv
                 system=system_prompt,
                 messages=st.session_state.conversation_history
             )
-            
-            assistant_message = response.content[0].text
-            
-            # Add assistant message to history
-            st.session_state.conversation_history.append({
-                "role": "assistant",
-                "content": assistant_message
-            })
-            
-            # Display assistant message
-            with st.chat_message("assistant"):
-                st.write(assistant_message)
-            
-            # Update user profile if learning is enabled
-            if st.session_state.enable_learning:
-                st.session_state.user_profile_manager.extract_from_conversation(
-                    st.session_state.conversation_history
-                )
+            if not response or not hasattr(response, "content") or not response.content or not hasattr(response.content[0], "text") or not response.content[0].text:
+                st.error("No response from Claude. Please try again.")
+            else:
+                assistant_message = response.content[0].text
+                # Add assistant message to history
+                st.session_state.conversation_history.append({
+                    "role": "assistant",
+                    "content": assistant_message
+                })
+                # Display assistant message
+                with st.chat_message("assistant"):
+                    st.write(assistant_message)
+                # Update user profile if learning is enabled
+                if st.session_state.enable_learning:
+                    st.session_state.user_profile_manager.extract_from_conversation(
+                        st.session_state.conversation_history
+                    )
         
         except Exception as e:
             st.error(f"Error: {str(e)}")
