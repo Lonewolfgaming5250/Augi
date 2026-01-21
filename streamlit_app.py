@@ -295,8 +295,7 @@ When the user asks questions, be conversational and helpful. Reference past conv
             # Update user profile if learning is enabled
             if st.session_state.enable_learning:
                 st.session_state.user_profile_manager.extract_from_conversation(
-                    user_input,
-                    assistant_message
+                    st.session_state.conversation_history
                 )
         
         except Exception as e:
