@@ -30,8 +30,18 @@ class ConversationIndex:
     
     def _save_index(self):
         """Save index to file."""
+        import collections.abc
+        def convert_sets(obj):
+            if isinstance(obj, set):
+                return list(obj)
+            elif isinstance(obj, collections.abc.Mapping):
+                return {k: convert_sets(v) for k, v in obj.items()}
+            elif isinstance(obj, list):
+                return [convert_sets(i) for i in obj]
+            else:
+                return obj
         with open(self.index_file, 'w') as f:
-            json.dump(self.index, f, indent=2)
+            json.dump(convert_sets(self.index), f, indent=2)
     
     def add_conversation(self, session_id: str, keywords: List[str], timestamp: str, message_count: int):
         """Add conversation to index.
@@ -127,8 +137,18 @@ class MemoryManager:
             "message_count": len(conversation_history)
         }
         
+        import collections.abc
+        def convert_sets(obj):
+            if isinstance(obj, set):
+                return list(obj)
+            elif isinstance(obj, collections.abc.Mapping):
+                return {k: convert_sets(v) for k, v in obj.items()}
+            elif isinstance(obj, list):
+                return [convert_sets(i) for i in obj]
+            else:
+                return obj
         with open(file_path, 'w') as f:
-            json.dump(conversation_data, f, indent=2)
+            json.dump(convert_sets(conversation_data), f, indent=2)
         
         # Extract keywords and add to index
         keywords = self._extract_keywords(conversation_history)
@@ -348,8 +368,18 @@ class MemoryManager:
         Args:
             profile: Profile dictionary with learned information
         """
+        import collections.abc
+        def convert_sets(obj):
+            if isinstance(obj, set):
+                return list(obj)
+            elif isinstance(obj, collections.abc.Mapping):
+                return {k: convert_sets(v) for k, v in obj.items()}
+            elif isinstance(obj, list):
+                return [convert_sets(i) for i in obj]
+            else:
+                return obj
         with open(self.profile_file, 'w') as f:
-            json.dump(profile, f, indent=2)
+            json.dump(convert_sets(profile), f, indent=2)
     
     def load_user_profile(self) -> Dict:
         """Load user profile information.

@@ -51,8 +51,18 @@ class VersionManager:
     
     def _save_version(self):
         """Save version info to file."""
+        import collections.abc
+        def convert_sets(obj):
+            if isinstance(obj, set):
+                return list(obj)
+            elif isinstance(obj, collections.abc.Mapping):
+                return {k: convert_sets(v) for k, v in obj.items()}
+            elif isinstance(obj, list):
+                return [convert_sets(i) for i in obj]
+            else:
+                return obj
         with open(self.version_file, 'w') as f:
-            json.dump(self.current_version, f, indent=2)
+            json.dump(convert_sets(self.current_version), f, indent=2)
     
     def create_release(self, version: str, features: List[str], 
                       bug_fixes: List[str] = None, notes: str = "") -> Dict:
@@ -79,8 +89,18 @@ class VersionManager:
         
         # Save changelog entry
         changelog_file = self.changelog_dir / f"{version}.json"
+        import collections.abc
+        def convert_sets(obj):
+            if isinstance(obj, set):
+                return list(obj)
+            elif isinstance(obj, collections.abc.Mapping):
+                return {k: convert_sets(v) for k, v in obj.items()}
+            elif isinstance(obj, list):
+                return [convert_sets(i) for i in obj]
+            else:
+                return obj
         with open(changelog_file, 'w') as f:
-            json.dump(release_info, f, indent=2)
+            json.dump(convert_sets(release_info), f, indent=2)
         
         # Update current version
         self.current_version = release_info

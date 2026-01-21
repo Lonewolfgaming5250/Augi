@@ -232,8 +232,18 @@ class PersonalAIAssistant:
     def _save_conversation_history(self):
         import json
         session_file = self._get_session_file_path()
+        import collections.abc
+        def convert_sets(obj):
+            if isinstance(obj, set):
+                return list(obj)
+            elif isinstance(obj, collections.abc.Mapping):
+                return {k: convert_sets(v) for k, v in obj.items()}
+            elif isinstance(obj, list):
+                return [convert_sets(i) for i in obj]
+            else:
+                return obj
         with open(session_file, "w", encoding="utf-8") as f:
-            json.dump(self.conversation_history, f, ensure_ascii=False, indent=2)
+            json.dump(convert_sets(self.conversation_history), f, ensure_ascii=False, indent=2)
 
     # (Removed duplicate, keep only the properly indented process_user_input below)
     def process_user_input(self, user_input: str):

@@ -61,9 +61,19 @@ class PermissionManager:
     def save_permissions(self):
         """Save permissions to config file."""
         os.makedirs(os.path.dirname(self.config_path), exist_ok=True)
+        import collections.abc
+        def convert_sets(obj):
+            if isinstance(obj, set):
+                return list(obj)
+            elif isinstance(obj, collections.abc.Mapping):
+                return {k: convert_sets(v) for k, v in obj.items()}
+            elif isinstance(obj, list):
+                return [convert_sets(i) for i in obj]
+            else:
+                return obj
         with open(self.config_path, 'w') as f:
             data = {k: v.name for k, v in self.permissions.items()}
-            json.dump(data, f, indent=2)
+            json.dump(convert_sets(data), f, indent=2)
     
     def check_permission(self, operation: OperationType) -> PermissionLevel:
         """Check permission level for an operation."""
