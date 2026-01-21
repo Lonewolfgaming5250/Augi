@@ -208,17 +208,20 @@ with st.sidebar:
             if search_results:
                 st.write(f"Found {len(search_results)} matching conversation(s):")
                 for result in search_results:
-                    with st.expander(f"📄 {result.get('session_id', 'Unknown')}"):
-                        st.write(f"**Timestamp:** {result.get('timestamp', 'N/A')}")
-                        st.write(f"**Messages:** {result.get('message_count', 0)}")
-                        st.write(f"**Matched content:** {result.get('matched_content', 'N/A')[:150]}")
-                        if st.button("Load this conversation", key=f"search_load_{result['session_id']}"):
-                            loaded_conv = st.session_state.memory_manager.load_conversation(result["session_id"])
-                            if loaded_conv:
-                                st.session_state.conversation_history = loaded_conv
-                                st.session_state.session_id = result["session_id"]
-                                st.success("Conversation loaded!")
-                                st.rerun()
+                    if isinstance(result, dict):
+                        with st.expander(f"📄 {result.get('session_id', 'Unknown')}"):
+                            st.write(f"**Timestamp:** {result.get('timestamp', 'N/A')}")
+                            st.write(f"**Messages:** {result.get('message_count', 0)}")
+                            st.write(f"**Matched content:** {result.get('matched_content', 'N/A')[:150]}")
+                            if st.button("Load this conversation", key=f"search_load_{result['session_id']}"):
+                                loaded_conv = st.session_state.memory_manager.load_conversation(result["session_id"])
+                                if loaded_conv:
+                                    st.session_state.conversation_history = loaded_conv
+                                    st.session_state.session_id = result["session_id"]
+                                    st.success("Conversation loaded!")
+                                    st.rerun()
+                    else:
+                        st.warning("Corrupted conversation data found. Skipping entry.")
             else:
                 st.info(f"No conversations found matching '{search_query}'")
     
