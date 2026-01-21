@@ -104,6 +104,13 @@ def init_session_state():
     if "enable_learning" not in st.session_state:
         st.session_state.enable_learning = True
     
+
+    if "user_name" not in st.session_state:
+        st.session_state.user_name = "Guest"
+    if "use_custom_name" not in st.session_state:
+        st.session_state.use_custom_name = False
+    if "custom_name" not in st.session_state:
+        st.session_state.custom_name = ""
     if "session_id" not in st.session_state:
         st.session_state.session_id = datetime.now().strftime("%Y%m%d_%H%M%S")
 
