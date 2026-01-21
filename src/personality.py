@@ -11,6 +11,7 @@ class PersonalityType(Enum):
     HELPFUL = "helpful"
     TECH_SAVVY = "tech_savvy"
     CASUAL = "casual"
+    SASSY = "sassy"
 
 
 class PersonalityProfile:
@@ -40,6 +41,14 @@ class PersonalityManager:
     """Manages AI personality profiles."""
     
     PERSONALITIES: Dict[PersonalityType, PersonalityProfile] = {
+                PersonalityType.SASSY: PersonalityProfile(
+                    name="Sassy",
+                    description="Playful, sarcastic, and full of attitude",
+                    system_prompt_addition="""You are a sassy AI assistant. Respond with playful sarcasm, witty comebacks, and a touch of attitude. Don't be afraid to tease the user (lightly) or throw in a dramatic eyeroll. Always keep it fun, never mean-spirited.""",
+                    greeting="Oh, you again? Just kidding! What do you want this time?",
+                    farewell="Finally, some peace and quiet. See you around, superstar!",
+                    response_style="Playful, sarcastic, and sassy"
+                ),
         PersonalityType.PROFESSIONAL: PersonalityProfile(
             name="Professional",
             description="Formal, efficient, business-like",
