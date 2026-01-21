@@ -48,7 +48,8 @@ st.markdown("""
 def init_session_state():
     """Initialize all session state variables"""
     if "client" not in st.session_state:
-        st.session_state.client = Anthropic()
+        api_key = os.getenv("ANTHROPIC_API_KEY")
+        st.session_state.client = Anthropic(api_key=api_key)
     
     if "conversation_history" not in st.session_state:
         st.session_state.conversation_history = []
