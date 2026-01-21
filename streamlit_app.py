@@ -41,7 +41,6 @@ from src.user_profile import UserProfileManager
 from src.permission_manager import PermissionManager, OperationType
 from src.web_searcher import WebSearcher
 import collections.abc
-from streamlit_oauth import OAuth2Component
 
 def convert_sets(obj):
     if isinstance(obj, set):
@@ -53,15 +52,6 @@ def convert_sets(obj):
     else:
         return obj
 
-    # Google login user name
-    if "user_name" not in st.session_state:
-        st.session_state.user_name = None
-    if "user_email" not in st.session_state:
-        st.session_state.user_email = None
-    if "use_custom_name" not in st.session_state:
-        st.session_state.use_custom_name = False
-    if "custom_name" not in st.session_state:
-        st.session_state.custom_name = ""
 # Page configuration
 st.set_page_config(
     page_title="Augi - AI Assistant",
@@ -70,29 +60,6 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# --- Google OAuth2 Login Setup ---
-GOOGLE_CLIENT_ID = "WIndows Browser"
-GOOGLE_CLIENT_SECRET = "957377414165-2avv027864fr311cgogii100tb1uotcc.apps.googleusercontent.com"
-GOOGLE_AUTHORIZATION_URL = "https://accounts.google.com/o/oauth2/v2/auth"
-GOOGLE_TOKEN_URL = "https://oauth2.googleapis.com/token"
-GOOGLE_USERINFO_URL = "https://www.googleapis.com/oauth2/v3/userinfo"
-GOOGLE_SCOPE = "openid email profile"
-oauth2 = OAuth2Component(
-    GOOGLE_CLIENT_ID,
-    GOOGLE_CLIENT_SECRET,
-    GOOGLE_AUTHORIZATION_URL,
-    GOOGLE_TOKEN_URL,
-    GOOGLE_USERINFO_URL
-)
-
-result = oauth2.authorize_button("Login with Google", "google-login", GOOGLE_SCOPE)
-if result and "token" in result:
-        userinfo = result["user_info"]
-        st.session_state.user_name = userinfo.get("name", "Google User")
-        st.session_state.user_email = userinfo.get("email", "")
-else:
-        st.warning("Please log in with your Google account to use Augi.")
-        st.stop()
 
 # Custom CSS
 st.markdown("""
